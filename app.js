@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var app = express();
 var checkLogin = require('./middleware/checkLogin');
 var parseQueryString = require('./middleware/parseQueryString');
+var checkIndentify = require('./middleware/checkIndentify');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -24,15 +25,13 @@ app.use(parseQueryString);
 // 设置静态资源文件夹
 app.use(express.static(path.join(__dirname, 'public')));
 // 验证
-console.log(checkLogin);
-app.use(checkLogin);
-
-app.get('/self',(req,res,next)=>{
-  res.send('你真棒');
-})
+app.use(checkLogin); // 验证是否登录
+app.use(checkIndentify);  //   验证身份
 app.use('/', index);
 app.use('/users', users);
-
+app.get('/self',(req,res)=>{
+  res.send('ok')
+})
 
 
 // catch 404 and forward to error handler
@@ -50,7 +49,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.send('error');
+  res.send(err);
 });
 
 module.exports = app;

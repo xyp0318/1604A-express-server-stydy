@@ -2,6 +2,7 @@ var common = require('../util/common');
 module.exports = (req,res,next)=>{
     let method = req.method;
     let sessionid = req[method==='POST'?'body':'query'].sessionid;
+    console.log(sessionid);
     if(req.path === '/users/login' && method === 'POST'){
       next();
       return;
@@ -13,7 +14,7 @@ module.exports = (req,res,next)=>{
       return;
     }
     // 验证时间是否失效
-    if(!(new Date().getTime() - userLoginInfo.time) < 2*60*60*1000){
+    if(!((new Date().getTime() - userLoginInfo.time) < 2*60*60*1000)){
       res.send({msg:'凭证失效',code:0});
       return;
     }

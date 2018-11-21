@@ -1,4 +1,4 @@
-
+var querystring = require('querystring');
 module.exports = (req,res,next)=>{
     let str = ''
     let data;
